@@ -1,0 +1,17 @@
+[project]
+name = "mcp-server-tester"
+version = "0.1.0"
+description = "Control and proxy MCP servers via FastMCP for testing"
+authors = [{ name = "OpenAI", email = "support@openai.com" }]
+readme = "README.md"
+requires-python = ">=3.11"
+dependencies = [
+    "fastmcp>=2.13.0",
+]
+
+[project.scripts]
+mcp-server-tester = "mcp_server_tester.__main__:main"
+
+[build-system]
+requires = ["setuptools>=68", "wheel"]
+build-backend = "setuptools.build_meta"
