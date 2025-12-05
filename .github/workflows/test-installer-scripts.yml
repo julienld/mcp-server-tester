@@ -19,9 +19,12 @@ jobs:
     steps:
       - uses: actions/checkout@v4
 
-      - name: Run macOS installer script
+      - name: Run macOS installer script (first run)
+        run: sh scripts/install-macos.sh
+
+      - name: Run macOS installer script (second run - idempotency test)
         run: |
-          # Run the installer script
+          # Should skip uv install and show "uv is already installed"
           sh scripts/install-macos.sh
 
       - name: Verify uv is installed
@@ -46,10 +49,15 @@ jobs:
     steps:
       - uses: actions/checkout@v4
 
-      - name: Run Windows installer script
+      - name: Run Windows installer script (first run)
         shell: pwsh
         run: |
-          # Run the installer script
+          & ./scripts/install-windows.ps1
+
+      - name: Run Windows installer script (second run - idempotency test)
+        shell: pwsh
+        run: |
+          # Should skip uv install and show "uv is already installed"
           & ./scripts/install-windows.ps1
 
       - name: Verify uv is installed
