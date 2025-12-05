@@ -11,6 +11,8 @@ on:
       - 'scripts/install-macos.sh'
       - 'scripts/install-windows.ps1'
       - '.github/workflows/test-installer-scripts.yml'
+  schedule:
+    - cron: '0 8 * * *'  # Daily at 8am UTC
   workflow_dispatch:
 
 jobs:
@@ -92,3 +94,14 @@ jobs:
             exit 1
           }
 
+  check-demo-env:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Check demo environment is up
+        run: |
+          response=$(curl -sf "https://ha-mcp-demo-server.qc-h.net/api/" \
+            -H "Authorization: Bearer demo" \
+            -H "Content-Type: application/json")
+          echo "Demo API response: $response"
+          # Verify we get a valid response
+          echo "$response" | jq -e '.message' || (echo "Invalid API response" && exit 1)
